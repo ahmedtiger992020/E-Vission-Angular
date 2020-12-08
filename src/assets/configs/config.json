@@ -1,0 +1,5 @@
+{
+  "FrontEndBaseUrl":"http://localhost:4200",
+  "ApiBaseUrl": "http://localhost:44310",
+  "DefaultLan": "ar"
+}

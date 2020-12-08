@@ -1,0 +1,146 @@
+<div class="col-md-12 continer-item p-30" style="background-color: #dfdfdf;
+">
+    <div class="row">
+        <div class="col-md-12 p-15-tb">
+            <p class="title-one">المنتجات</p>
+            <div class="row actions">
+                <div class="col-md-2">
+                    <button class="btn btn-NEW btn-add" mat-button [routerLink]="['/AddProduct']"> <span
+                            class="material-icons">
+                            add
+                        </span>إضافة</button>
+                </div>
+
+
+                <div class="col-md-2">
+                    <button class="btn btn-NEW btn-add" mat-button (click)="exportTable()">إستخراج كملف إكسيل</button>
+                </div>
+
+                <div class="col-md-1">
+                    <div class="icon">
+                        <img class="center-block" (click)="clearSearch()" src="assets/img/refresh.svg" alt="" srcset="">
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="icon" (click)="Filters=!Filters" [ngClass]="{'opened' : Filters==true}">
+                        <img class="center-block" src="assets/img/filter_list.svg" alt="" srcset="">
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    <div>
+        <div class="w-100 margin-top10">
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="defualtPageSize" [length]="resultsLength"
+                showFirstLastButtons>
+            </mat-paginator>
+        </div>
+    </div>
+    <div class="example-container mat-elevation-z8">
+
+        <div class="col-md-12 p-d-0">
+            <table mat-table matSort [dataSource]="dataSource" class="productsTbl">
+                <!-- Id Column -->
+                <ng-container matColumnDef="Id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+                    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="Name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>الإسم</th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
+
+                <!-- Photo Column -->
+                <ng-container matColumnDef="Photo">
+                    <th class="align-right" mat-header-cell *matHeaderCellDef mat-sort-header>الصورة
+                    </th>
+                    <td mat-cell *matCellDef="let element"><img width="100px" height="100px" class="center-block"
+                            src={{element.photo}} srcset="">
+                    </td>
+                </ng-container>
+
+
+                <!-- Role  Column -->
+                <ng-container matColumnDef="Price">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>السعر
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="symbol">
+                    <th mat-header-cell *matHeaderCellDef>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div>
+                            <a><span class="span-edit"><img src="assets/img/create-24px.svg" alt=""
+                                        (click)="navigateToAddEditPage(element.id)" #tooltip="matTooltip"
+                                        matTooltip="تعديل" matTooltipHideDelay="10"
+                                        aria-label="Button that displays a tooltip that hides when scrolled out of the container"></span></a>
+
+                            <a><span class="span-edit"><img src="assets/img/delete-24px.svg" alt=""
+                                        (click)="deleteProductById(element.id)" #tooltip="matTooltip" matTooltip="حذف"
+                                        matTooltipHideDelay="10"
+                                        aria-label="Button that displays a tooltip that hides when scrolled out of the container"></span></a>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <!-- Header row second group -->
+                <ng-container matColumnDef="Idfilter">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="filter">
+                            <div class="w-100">
+                            </div>
+                        </div>
+                    </th>
+                </ng-container>
+
+                <ng-container matColumnDef="Namefilter">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="filter">
+                            <div class="w-100">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label> الإسم</mat-label>
+                                    <input matInput maxlength="90" [(ngModel)]="searchDto.name"
+                                        (keydown.enter)="loadData()" />
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </th>
+                </ng-container>
+
+                <ng-container matColumnDef="Pricefilter">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <div class="filter">
+                            <div class="w-100">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label> السعر</mat-label>
+                                    <input matInput maxlength="90" [(ngModel)]="searchDto.price"
+                                        (keydown.enter)="loadData()" />
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </th>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-header-row *matHeaderRowDef="displayedfilter"
+                    [@detailExpand]="Filters ? 'expanded' : 'collapsed'"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">
+        <p style="color: white">جاري التحميل</p>
+    </ngx-spinner>
