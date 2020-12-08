@@ -308,8 +308,8 @@ export class ProductServiceProxy {
     /**
      * @return Success
      */
-    getUserDDL(): Observable<IdNameDtoListResultDto> {
-        let url_ = this.baseUrl + "/api/Product/GetUserDDL";
+    getProductDDL(): Observable<IdNameDtoListResultDto> {
+        let url_ = this.baseUrl + "/api/Product/GetProductDDL";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -321,11 +321,11 @@ export class ProductServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetUserDDL(response_);
+            return this.processGetProductDDL(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetUserDDL(<any>response_);
+                    return this.processGetProductDDL(<any>response_);
                 } catch (e) {
                     return <Observable<IdNameDtoListResultDto>><any>_observableThrow(e);
                 }
@@ -334,7 +334,7 @@ export class ProductServiceProxy {
         }));
     }
 
-    protected processGetUserDDL(response: HttpResponseBase): Observable<IdNameDtoListResultDto> {
+    protected processGetProductDDL(response: HttpResponseBase): Observable<IdNameDtoListResultDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
